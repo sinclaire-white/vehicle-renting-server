@@ -17,7 +17,7 @@ const initDB = async () => {
                 password TEXT NOT NULL,
                 phone VARCHAR(20) NOT NULL,
                  role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'customer')),
-                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+                
         `);
 
   await pool.query(`
@@ -28,7 +28,7 @@ const initDB = async () => {
             registration_number VARCHAR(50) NOT NULL UNIQUE,
             daily_rent_price DECIMAL(10, 2) NOT NULL CHECK (daily_rent_price > 0),
             availability_status VARCHAR(20) NOT NULL CHECK (availability_status IN ('available', 'booked')),
-            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+            
         )
         `);
 
