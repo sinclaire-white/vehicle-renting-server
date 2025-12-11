@@ -1,6 +1,28 @@
 import { Request, Response } from "express";
 import { usersService } from "./users.service";
 
+// Get user's own profile
+const getOwnProfile = async (req: any, res: Response) => {
+  try {
+    const users = await usersService.getUserById(req.user.id);
+    if (!users || users.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: users[0],
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
 // Get all users
 
 const getAllUsers = async (req: Request, res: Response) => {
@@ -64,6 +86,7 @@ const deleteUser = async (req: any, res: Response) => {
 };
 
 export const usersController = {
+  getOwnProfile,
   getAllUsers,
   updateUser,
   deleteUser,

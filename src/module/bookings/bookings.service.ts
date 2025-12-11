@@ -73,10 +73,10 @@ const getAllBookings = async (userId: number, userRole: string) => {
     const query = `
       SELECT 
         b.*,
-        json_build_object('name', u.name, 'email', u.email) as customer,
+        json_build_object('name', c.name, 'email', c.email) as customer,
         json_build_object('vehicle_name', v.vehicle_name, 'registration_number', v.registration_number) as vehicle
       FROM bookings b 
-      JOIN users u ON b.customer_id = u.id 
+      JOIN customers c ON b.customer_id = c.id 
       JOIN vehicles v ON b.vehicle_id = v.id
       ORDER BY b.id DESC
     `;
@@ -123,9 +123,12 @@ const updateBooking = async (
   const booking = bookingResult.rows[0];
 // Handle cancellation of booking
   if (status === "cancelled") {
-    // Only customers can cancel their own bookings
-    if (userRole !== "customer" || booking.customer_id !== userId) {
+    // Only customers can cancel their own bookings, admins can cancel any booking
+    if (userRole === "customer" && booking.customer_id !== userId) {
       throw new Error("You can only cancel your own bookings");
+    }
+    if (userRole !== "customer" && userRole !== "admin") {
+      throw new Error("Only customers and admins can cancel bookings");
     }
 // Only active bookings can be cancelled
     if (booking.status !== "active") {

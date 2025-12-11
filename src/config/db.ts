@@ -16,8 +16,8 @@ const initDB = async () => {
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password TEXT NOT NULL,
                 phone VARCHAR(20) NOT NULL,
-                role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'customer')),
-                
+                role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'customer'))
+            )   
         `);
 
   await pool.query(`
@@ -27,8 +27,7 @@ const initDB = async () => {
             type VARCHAR(20) NOT NULL CHECK (type IN ('car', 'bike', 'van', 'SUV')),
             registration_number VARCHAR(50) NOT NULL UNIQUE,
             daily_rent_price DECIMAL(10, 2) NOT NULL CHECK (daily_rent_price > 0),
-            availability_status VARCHAR(20) NOT NULL CHECK (availability_status IN ('available', 'booked')),
-            
+            availability_status VARCHAR(20) NOT NULL CHECK (availability_status IN ('available', 'booked'))
         )
         `);
 
@@ -39,8 +38,22 @@ const initDB = async () => {
             vehicle_id INTEGER NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
             rent_start_date DATE NOT NULL,
             rent_end_date DATE NOT NULL,
+            total_price DECIMAL(10, 2) NOT NULL CHECK (total_price > 0),
             status VARCHAR(20) NOT NULL CHECK (status IN ('active','cancelled', 'returned'))
+        )
       `);
 };
+
+// Initialize database on startup
+const startDB = async () => {
+  try {
+    await initDB();
+    console.log('Database tables initialized successfully');
+  } catch (error) {
+    console.error('Error initializing database:', error);
+  }
+};
+
+startDB();
 
 export default initDB;

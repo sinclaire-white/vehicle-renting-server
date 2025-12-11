@@ -1,6 +1,17 @@
 import bcrypt from "bcryptjs";
 import { pool } from "../../config/db";
 
+// Get user by ID
+const getUserById = async (userId: number | string) => {
+  const result = await pool.query(
+    `
+    SELECT id, name, email, phone, role FROM customers WHERE id = $1
+    `,
+    [userId]
+  );
+  return result.rows;
+};
+
 // Get all users
 const getAllusers = async () => {
   const result = await pool.query(
@@ -64,7 +75,7 @@ const updateUser = async (
 
   // Update the user in the database
   const updateResult = await pool.query(
-    "UPDATE users SET name = COALESCE($1, name), email = COALESCE($2, email), phone = COALESCE($3, phone), password = COALESCE($4, password), role = COALESCE($5, role) WHERE id = $6 RETURNING id, name, email, phone, role",
+    "UPDATE customers SET name = COALESCE($1, name), email = COALESCE($2, email), phone = COALESCE($3, phone), password = COALESCE($4, password), role = COALESCE($5, role) WHERE id = $6 RETURNING id, name, email, phone, role",
     [name, email?.toLowerCase(), phone, hashedPassword, role, userId]
   );
   return updateResult;
@@ -110,6 +121,7 @@ const deleteUser = async (
 };
 
 export const usersService = {
+  getUserById,
   getAllusers,
   updateUser,
   deleteUser,

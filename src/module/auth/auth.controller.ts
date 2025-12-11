@@ -24,7 +24,7 @@ const signUpController = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(400).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }
@@ -51,7 +51,7 @@ const signInController = async (req: Request, res: Response) => {
     });
   } catch (error: any) {
     res.status(400).json({
-      succsess: false,
+      success: false,
       message: error.message,
     });
   }

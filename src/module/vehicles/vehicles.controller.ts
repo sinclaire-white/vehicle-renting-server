@@ -23,7 +23,7 @@ const createVehicle = async (req: Request, res: Response) => {
     return res.status(201).json({
       success: true,
       message: 'Vehicle created successfully',
-      vehicle: result.rows[0],
+      data: result.rows[0],
     });
 
   } catch (error: any) {
@@ -42,7 +42,7 @@ const getAllVehicles = async (req: Request, res: Response) => {
 // Respond with success message and list of vehicles
     return res.json({
       success: true,
-      vehicles: result.rows,
+      data: result.rows,
     });
 
   } catch (error: any) {
@@ -68,7 +68,7 @@ const getVehicleById = async (req: Request, res: Response) => {
 
     return res.json({
       success: true,
-      vehicle: result.rows[0],
+      data: result.rows[0],
     });
 
   } catch (error: any) {
@@ -98,7 +98,7 @@ const updateVehicle = async (req: Request, res: Response) => {
     return res.json({
       success: true,
       message: 'Vehicle updated successfully',
-      vehicle: result.rows[0],
+      data: result.rows[0],
     });
 
   } catch (error: any) {
