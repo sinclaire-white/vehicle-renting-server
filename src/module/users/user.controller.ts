@@ -1,58 +1,64 @@
 import { Request, Response } from "express";
 import { usersService } from "./users.service";
 
+// Get all users
+
 const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const result = await usersService.getAllUsers();
-    
-    res.json({ 
+    const users = await usersService.getAllusers();
+    res.status(200).json({
       success: true,
-      users: result.rows 
+      data: users,
     });
   } catch (error: any) {
-    res.status(500).json({ 
+    res.status(500).json({
       success: false,
-      error: error.message 
+      error: error.message,
     });
   }
 };
 
+// update user
 const updateUser = async (req: any, res: Response) => {
   try {
+    // call service to update user
     const result = await usersService.updateUser(
-      req.params.userId as string,
+      req.params.userId,
       req.body,
       req.user.id,
       req.user.role
     );
-    
-    res.json({ 
+    res.json({
       success: true,
-      message: 'User updated successfully', 
-      user: result.rows[0] 
+      message: "User updated successfully",
+      user: result.rows[0],
     });
   } catch (error: any) {
-    const status = error.message === 'User not found' ? 404 : error.message.includes('only') ? 403 : 400;
-    res.status(status).json({ 
+    res.status(500).json({
       success: false,
-      error: error.message 
+      error: error.message,
     });
   }
 };
 
-const deleteUser = async (req: Request, res: Response) => {
+// delete user
+const deleteUser = async (req: any, res: Response) => {
   try {
-    await usersService.deleteUser(req.params.userId as string);
-    
-    res.json({ 
+    await usersService.deleteUser(
+      req.params.userId as string,
+      req.user.id,
+      req.user.role
+    );
+
+    res.json({
       success: true,
-      message: 'User deleted successfully' 
+      message: "User deleted successfully",
     });
   } catch (error: any) {
-    const status = error.message === 'User not found' ? 404 : 400;
-    res.status(status).json({ 
+    const status = error.message === "User not found" ? 404 : 400;
+    res.status(status).json({
       success: false,
-      error: error.message 
+      error: error.message,
     });
   }
 };
@@ -60,5 +66,5 @@ const deleteUser = async (req: Request, res: Response) => {
 export const usersController = {
   getAllUsers,
   updateUser,
-  deleteUser
+  deleteUser,
 };

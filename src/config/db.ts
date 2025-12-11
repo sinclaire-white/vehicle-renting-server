@@ -16,7 +16,7 @@ const initDB = async () => {
                 email VARCHAR(255) UNIQUE NOT NULL,
                 password TEXT NOT NULL,
                 phone VARCHAR(20) NOT NULL,
-                 role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'customer')),
+                role VARCHAR(20) NOT NULL CHECK (role IN ('admin', 'customer')),
                 
         `);
 
@@ -32,13 +32,14 @@ const initDB = async () => {
         )
         `);
 
-    await pool.query(`
+  await pool.query(`
         CREATE TABLE IF NOT EXISTS bookings (
             id SERIAL PRIMARY KEY,
             customer_id INTEGER NOT NULL REFERENCES customers(id) ON DELETE CASCADE,
             vehicle_id INTEGER NOT NULL REFERENCES vehicles(id) ON DELETE CASCADE,
             rent_start_date DATE NOT NULL,
             rent_end_date DATE NOT NULL,
+            status VARCHAR(20) NOT NULL CHECK (status IN ('active','cancelled', 'returned'))
       `);
 };
 
