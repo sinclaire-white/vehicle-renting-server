@@ -39,8 +39,12 @@ const updateUser = async (
   if (result.rows.length === 0) {
     throw new Error("User not found");
   }
+ // Convert requestUserId to number for comparison
+  const requestUserIdNum = parseInt(requestUserId);
+  const userIdNum = parseInt(userId);
+
   // check if user is admin or the user himself
-  if (requestUserId !== userId && requestUserRole !== "admin") {
+  if (requestUserIdNum !== userIdNum && requestUserRole !== "admin") {
     throw new Error("Unauthorized to update this user");
   }
 

@@ -71,8 +71,18 @@ const getAllBookings = async (req: any, res: Response) => {
 // update booking status (cancel or return)
 const updateBooking = async (req: any, res: Response) => {
   try {
+    // check if request body has exist
+     if (!req.body) {
+      return res.status(400).json({
+        success: false,
+        message: "Request body is required",
+        errors: "Request body is required",
+      });
+    }
+
     // extract data from request body
     const { status } = req.body;
+
     // basic validation for status
     if (!status || !["cancelled", "returned"].includes(status)) {
       return res.status(400).json({
@@ -80,7 +90,8 @@ const updateBooking = async (req: any, res: Response) => {
         message: "Invalid status",
         errors: 'Status must be "cancelled" or "returned"',
       });
-    }
+    };
+
     // call service to update booking status
     const result = await bookingsService.updateBooking(
       req.params.bookingId,
@@ -88,6 +99,7 @@ const updateBooking = async (req: any, res: Response) => {
       req.user.id,
       req.user.role
     );
+
     // customize message based on status
     const message =
       status === "cancelled"
@@ -100,13 +112,13 @@ const updateBooking = async (req: any, res: Response) => {
       data: result,
     });
   } catch (error: any) {
-    const status =
+    const statusCode =
       error.message === "Booking not found"
         ? 404
-        : error.message.includes("Only")
+        : error.message.includes("Only") || error.message.includes("Unauthorized")
         ? 403
         : 400;
-    res.status(status).json({
+    res.status(statusCode).json({
       success: false,
       message: error.message,
       errors: error.message,
