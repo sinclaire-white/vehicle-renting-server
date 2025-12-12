@@ -4,7 +4,7 @@ A comprehensive backend API for a vehicle rental management system built with No
 
 ## 🌐 Live Deployment
 
-**API Base URL:** [Your Live Deployment Link]
+**API Base URL:** https://vehicle-server-two.vercel.app
 
 ## ✨ Features
 
@@ -247,24 +247,7 @@ Content-Type: application/json
 3. Include token in Authorization header: `Bearer <token>`
 4. Token is verified and user permissions are checked
 5. Request proceeds if authorized, otherwise returns 401/403
-
-## 🐛 Bug Fixes & Improvements
-
-This version includes comprehensive bug fixes and improvements:
-- Fixed database schema with missing `total_price` column
-- Standardized response field naming across all endpoints
-- Fixed SQL query alias mismatches
-- Improved authorization logic for booking operations
-- Added user profile endpoint for authenticated users
-- Auto-initialization of database tables on startup
-
-See detailed fixes in the commit history.
-
-## 📖 Documentation
-
-For detailed API specifications, request/response formats, and examples, refer to the main project documentation:
-- **Main Docs:** [README.md in B6A2 folder]
-- **API Reference:** [API_REFERENCE.md in B6A2 folder]
+.
 
 ## 💡 Notes
 
@@ -274,12 +257,5 @@ For detailed API specifications, request/response formats, and examples, refer t
 - JWT tokens expire after 24 hours
 - All monetary values use DECIMAL type for accuracy
 
-## 📞 Support
-
-For issues or questions about this backend API, please refer to the documentation or create an issue in the GitHub repository.
 
 ---
-
-**Repository:** https://github.com/sinclaire-white/vehicle-renting-server
-
-**Last Updated:** December 12, 2025
